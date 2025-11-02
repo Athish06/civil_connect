@@ -70,6 +70,55 @@
     font-weight:700;
   }
 
+  #loginScreen {
+    min-height:100vh;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:var(--bg-muted);
+    padding:32px;
+  }
+
+  .login-card {
+    width:100%;
+    max-width:380px;
+    background:var(--bg-surface);
+    padding:32px;
+    border-radius:18px;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--border-soft);
+  }
+
+  .login-card h2 {
+    font-size:26px;
+    margin-bottom:8px;
+  }
+
+  .login-card p {
+    color:var(--text-secondary);
+    margin-bottom:24px;
+  }
+
+  .login-field {
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:18px;
+  }
+
+  .login-card label {
+    font-weight:600;
+    color:var(--text-primary);
+    font-size:14px;
+  }
+
+  .login-error {
+    margin-top:8px;
+    color:#dc2626;
+    font-size:14px;
+    min-height:20px;
+  }
+
   nav {
     display:flex;
     gap:12px;
@@ -309,29 +358,30 @@
   .cart-item {
     display:grid;
     grid-template-columns:1fr auto auto;
-    gap:20px;
-    padding:18px 0;
+    gap:24px;
+    padding:24px 0;
     border-bottom:1px solid var(--border-soft);
   }
 
   .cart-item:last-child { border-bottom:none; }
 
-  .cart-item h4 { font-size:16px; margin-bottom:4px; }
-  .cart-item p { color:var(--text-secondary); font-size:13px; }
+  .cart-item h4 { font-size:17px; margin-bottom:8px; font-weight:600; }
+  .cart-item p { color:var(--text-secondary); font-size:14px; line-height:1.5; }
 
   .quantity-group {
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:12px;
   }
 
   .quantity-btn {
-    width:34px;
-    height:34px;
+    width:38px;
+    height:38px;
     border-radius:50%;
     border:1px solid var(--border-soft);
     background:var(--bg-surface);
     font-weight:600;
+    font-size:16px;
   }
 
   .quantity-btn:hover { border-color:var(--blue-500); color:var(--blue-600); }
@@ -351,22 +401,24 @@
     align-items:flex-end;
     flex-wrap:wrap;
     gap:16px;
-    padding-top:8px;
+    padding-top:24px;
+    margin-top:12px;
   }
 
-  .cart-summary h3 { font-size:20px; }
-  .cart-summary span { color:var(--text-secondary); font-size:13px; }
+  .cart-summary h3 { font-size:22px; }
+  .cart-summary span { color:var(--text-secondary); font-size:14px; margin-top:6px; display:block; }
 
   .checkout-btn {
     width:100%;
-    padding:14px;
+    padding:16px;
     border:none;
     border-radius:14px;
     font-weight:600;
-    font-size:15px;
+    font-size:16px;
     background:var(--green-500);
     color:#fff;
     transition:background 0.2s ease;
+    margin-top:20px;
   }
 
   .checkout-btn:hover { background:#15803d; }
@@ -376,6 +428,10 @@
     flex-direction:column;
     gap:18px;
     border:1px solid var(--border-soft);
+  }
+
+  .prof-card.bookmarked {
+    border:2px solid #fef3c7;
   }
 
   .prof-head {
@@ -456,7 +512,7 @@
   .cart-sidebar.open { transform:translateX(0); }
 
   .cart-sidebar-header {
-    padding:20px;
+    padding:24px;
     border-bottom:1px solid var(--border-soft);
     display:flex;
     justify-content:space-between;
@@ -465,19 +521,49 @@
 
   .cart-sidebar-body {
     flex:1;
-    padding:24px;
+    padding:32px;
     overflow-y:auto;
+  }
+
+  .cart-list {
+    margin-bottom:24px;
   }
 
   .container.sidebar-open { margin-right:350px; }
 
   .header-inner.sidebar-open { margin-right:350px; }
 
-  #cartToggle:hover { color: #dc2626; }
+  #appShell {
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+  }
+
+  #cartToggle:hover { color: #dc2626; background: rgba(220,38,38,0.1); border-radius:4px; padding:4px 8px; }
 </style>
 </head>
 <body>
 
+<div id="loginScreen">
+  <div class="login-card">
+    <h2>Welcome back</h2>
+    <p>Sign in to access CivilConnect.</p>
+    <form id="loginForm">
+      <div class="login-field">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="login-field">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter password" required>
+      </div>
+      <button type="submit" class="btn-full" style="margin-top:4px;">Sign in</button>
+      <div id="loginError" class="login-error"></div>
+    </form>
+  </div>
+</div>
+
+<div id="appShell" style="display:none;">
 <header>
   <div class="header-inner">
     <div class="brand"><span class="brand-pill">CC</span> CivilConnect</div>
@@ -642,9 +728,57 @@
   <p>CivilConnect © 2025 · Transforming Civil Engineering by connecting professionals, suppliers, and innovation.</p>
 </footer>
 
+</div>
+
 <script>
   const tabIds = ['home','marketplace','professionals','tools'];
+  const AUTH_EMAIL = 'test@gmail.com';
+  const AUTH_PASSWORD = 'test123';
+  const AUTH_KEY = 'civilconnect-auth';
+
+  const loginForm = document.getElementById('loginForm');
+  const loginEmail = document.getElementById('loginEmail');
+  const loginPassword = document.getElementById('loginPassword');
+  const loginError = document.getElementById('loginError');
+
+  function isAuthenticated(){
+    return sessionStorage.getItem(AUTH_KEY) === 'true';
+  }
+
+  function showApp(){
+    const appShell = document.getElementById('appShell');
+    const loginScreen = document.getElementById('loginScreen');
+    const cartSidebar = document.getElementById('cartSidebar');
+    const container = document.querySelector('.container');
+    const headerInner = document.querySelector('.header-inner');
+    appShell.style.display = 'flex';
+    loginScreen.style.display = 'none';
+    if(cartSidebar){ cartSidebar.classList.remove('open'); }
+    if(container){ container.classList.remove('sidebar-open'); }
+    if(headerInner){ headerInner.classList.remove('sidebar-open'); }
+    if(loginError){ loginError.textContent = ''; }
+  }
+
+  function showLogin(){
+    const appShell = document.getElementById('appShell');
+    const loginScreen = document.getElementById('loginScreen');
+    const cartSidebar = document.getElementById('cartSidebar');
+    const container = document.querySelector('.container');
+    const headerInner = document.querySelector('.header-inner');
+    appShell.style.display = 'none';
+    loginScreen.style.display = 'flex';
+    if(cartSidebar){ cartSidebar.classList.remove('open'); }
+    if(container){ container.classList.remove('sidebar-open'); }
+    if(headerInner){ headerInner.classList.remove('sidebar-open'); }
+    if(loginForm){ loginForm.reset(); }
+    if(loginError){ loginError.textContent = ''; }
+  }
+
   function switchTab(tab){
+    if(!isAuthenticated()){
+      showLogin();
+      return;
+    }
     tabIds.forEach(t=>{
       const section = document.getElementById(t+'Section');
       const button = document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1));
@@ -683,11 +817,17 @@
   ];
 
   const professionals = [
-    {name:'Dr. Rajesh Kumar',role:'Structural Engineer',experience:'15 years',rating:4.9,distance:'2.3 km',projects:127,availability:'Consult slots open'},
-    {name:'Priya Sharma',role:'Architect',experience:'10 years',rating:4.7,distance:'3.5 km',projects:89,availability:'Design sprint available'},
-    {name:'Mohammed Ali',role:'Contractor',experience:'20 years',rating:4.8,distance:'1.8 km',projects:203,availability:'Crew mobilizing in 1 week'},
-    {name:'Sarah Patel',role:'Quantity Surveyor',experience:'8 years',rating:4.6,distance:'4.2 km',projects:64,availability:'Cost review window open'},
-    {name:"John D'Souza",role:'Site Supervisor',experience:'12 years',rating:4.5,distance:'2.9 km',projects:156,availability:'Accepting new projects'}
+    {name:'L. Yuvaraj',role:'Civil Contractor',experience:'35 years',rating:4.8,distance:'Nearby',projects:150,availability:'Available for large projects'},
+    {name:'R. Karthikeyan',role:'Civil Contractor',experience:'35 years',rating:4.7,distance:'Nearby',projects:140,availability:'Experienced contractor'},
+    {name:'A. Akilan',role:'Supervisor',experience:'25 years',rating:4.6,distance:'Nearby',projects:80,availability:'Site supervision available'},
+    {name:'Kumar',role:'Mason',experience:'20 years',rating:4.5,distance:'Nearby',projects:60,availability:'Brickwork specialist'},
+    {name:'Perumal',role:'Plumber',experience:'15 years',rating:4.4,distance:'Nearby',projects:45,availability:'Plumbing services'},
+    {name:'Namashivayam',role:'Electrician',experience:'15 years',rating:4.3,distance:'Nearby',projects:40,availability:'Electrical work'},
+    {name:'Manohar',role:'Carpenter',experience:'15 years',rating:4.4,distance:'Nearby',projects:50,availability:'Woodwork expert'},
+    {name:'Kasinathan',role:'Shuttering and Bar Bending Work',experience:'15 years',rating:4.5,distance:'Nearby',projects:55,availability:'Reinforcement specialist'},
+    {name:'Shenavas',role:'Architect',experience:'30 years',rating:4.9,distance:'Nearby',projects:120,availability:'Design consultations'},
+    {name:'Ponnusamy',role:'Structural Engineer',experience:'15 years',rating:4.6,distance:'Nearby',projects:70,availability:'Structural analysis'},
+    {name:'Prakash',role:'Painter',experience:'15 years',rating:4.2,distance:'Nearby',projects:35,availability:'Painting services'}
   ];
 
   const materialsGrid = document.getElementById('materialsGrid');
@@ -716,6 +856,8 @@
   });
 
   let cart = [];
+
+  let bookmarked = new Set();
 
   function checkout(){
     if(cart.length === 0){
@@ -898,7 +1040,20 @@
   }
 
   function bookmarkExpert(name){
-    alert(`${name} has been bookmarked.`);
+    const cards = document.querySelectorAll('.prof-card');
+    cards.forEach(card => {
+      if(card.querySelector('h3').textContent === name){
+        if(bookmarked.has(name)){
+          bookmarked.delete(name);
+          card.classList.remove('bookmarked');
+          alert(`${name} has been unbookmarked.`);
+        } else {
+          bookmarked.add(name);
+          card.classList.add('bookmarked');
+          alert(`${name} has been bookmarked.`);
+        }
+      }
+    });
   }
 
   function calculateCost(){
@@ -970,6 +1125,37 @@
       headerInner.classList.remove('sidebar-open');
     }
   });
+
+  function handleLogin(event){
+    event.preventDefault();
+    const email = (loginEmail.value || '').trim().toLowerCase();
+    const password = loginPassword.value || '';
+    if(email === AUTH_EMAIL && password === AUTH_PASSWORD){
+  sessionStorage.setItem(AUTH_KEY, 'true');
+      if(loginForm){ loginForm.reset(); }
+      showApp();
+      switchTab('home');
+    } else {
+      if(loginError){ loginError.textContent = 'Invalid email or password.'; }
+    }
+  }
+
+  if(loginForm){
+    loginForm.addEventListener('submit', handleLogin);
+  }
+
+  function initializeAuth(){
+    if(isAuthenticated()){
+      showApp();
+      switchTab('home');
+    } else {
+      showLogin();
+    }
+  }
+
+  renderMaterials();
+  renderCart();
+  initializeAuth();
 </script>
 
 </body>
