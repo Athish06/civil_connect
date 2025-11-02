@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CivilConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-muted: #f5f7fb;
+    --bg-surface: #ffffff;
+    --bg-subtle: #eef1f7;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border-soft: #e2e8f0;
+    --blue-500: #2563eb;
+    --blue-600: #1d4ed8;
+    --green-500: #16a34a;
+    --amber-500: #f59e0b;
+    --shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.08);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+  body {
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    background:var(--bg-muted);
+    color:var(--text-primary);
+  }
+
+  button { cursor:pointer; }
+
+  header {
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:var(--bg-surface);
+    box-shadow:0 1px 0 rgba(15,23,42,0.08);
+  }
+
+  .header-inner {
+    max-width:1200px;
+    margin:0 auto;
+    padding:20px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+
+  .brand {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:700;
+    font-size:20px;
+    color:var(--blue-600);
+  }
+
+  .brand-pill {
+    display:inline-flex;
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg, var(--blue-600), #0ea5e9);
+    color:#fff;
+    font-weight:700;
+  }
+
+  nav {
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+
+  nav button {
+    border:none;
+    background:transparent;
+    color:var(--text-secondary);
+    font-weight:600;
+    padding:10px 14px;
+    border-radius:10px;
+    transition:background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  nav button:hover { background:var(--bg-subtle); color:var(--blue-600); }
+  nav button.active { background:rgba(37,99,235,0.12); color:var(--blue-600); }
+
+  main {
+    flex:1;
+    width:100%;
+  }
+
+  .container {
+    max-width:1200px;
+    margin:0 auto;
+    padding:32px 24px 48px;
+  }
+
+  .content-section { display:none; }
+  .content-section.active { display:block; }
+
+  .card {
+    background:var(--bg-surface);
+    border-radius:18px;
+    padding:24px;
+    box-shadow:var(--shadow-sm);
+  }
+
+  .hero {
+    display:grid;
+    gap:28px;
+    align-items:center;
+    background:linear-gradient(135deg, rgba(37,99,235,0.1), rgba(14,165,233,0.12));
+    border:1px solid rgba(37,99,235,0.15);
+  }
+
+  .hero h1 {
+    font-size:34px;
+    line-height:1.2;
+    margin-bottom:12px;
+  }
+
+  .hero p {
+    color:var(--text-secondary);
+    max-width:560px;
+  }
+
+  .action-row {
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:20px;
+  }
+
+  .btn-primary, .btn-secondary {
+    border:none;
+    padding:12px 20px;
+    border-radius:12px;
+    font-weight:600;
+    font-size:15px;
+    min-width:180px;
+  }
+
+  .btn-primary { background:var(--blue-600); color:#fff; }
+  .btn-primary:hover { background:#1840b8; }
+
+  .btn-secondary { background:var(--bg-surface); color:var(--blue-600); border:1px solid rgba(29,78,216,0.25); }
+  .btn-secondary:hover { background:rgba(37,99,235,0.08); }
+
+  .highlights {
+    display:grid;
+    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    margin-top:28px;
+  }
+
+  .highlight {
+    background:var(--bg-surface);
+    border-radius:16px;
+    padding:20px;
+    border:1px solid var(--border-soft);
+  }
+
+  .highlight span { display:block; font-size:13px; color:var(--text-secondary); margin-bottom:8px; }
+  .highlight strong { font-size:22px; }
+
+  .section-title {
+    font-size:22px;
+    margin-bottom:18px;
+  }
+
+  .grid { display:grid; gap:24px; }
+  .grid-3 { grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); }
+  .grid-2 { grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); }
+
+  .material-card {
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    border:1px solid rgba(226,232,240,0.8);
+  }
+
+  .material-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+  }
+
+  .material-emoji {
+    font-size:36px;
+    display:inline-flex;
+  }
+
+  .material-category {
+    padding:6px 12px;
+    border-radius:999px;
+    background:rgba(37,99,235,0.1);
+    color:var(--blue-600);
+    font-weight:600;
+    font-size:13px;
+  }
+
+  .material-meta {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-weight:600;
+  }
+
+  .material-meta span:last-child { color:var(--text-secondary); font-weight:500; font-size:13px; }
+
+  .material-foot {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:13px;
+    color:var(--text-secondary);
+  }
+
+  .btn-full {
+    width:100%;
+    padding:12px 16px;
+    border-radius:12px;
+    border:none;
+    background:var(--blue-600);
+    color:#fff;
+    font-weight:600;
+    transition:background 0.2s ease;
+  }
+
+  .btn-full:hover { background:#1840b8; }
+
+  .marketplace-toolbar {
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    align-items:flex-end;
+    border:1px solid var(--border-soft);
+    background:var(--bg-surface);
+    margin-bottom:28px;
+  }
+
+  .field {
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    min-width:200px;
+  }
+
+  .field span { font-size:13px; color:var(--text-secondary); }
+
+  input, select {
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid rgba(148,163,184,0.4);
+    background:#fff;
+    font-size:14px;
+    color:var(--text-primary);
+  }
+
+  input:focus, select:focus {
+    outline:none;
+    border-color:var(--blue-500);
+    box-shadow:0 0 0 3px rgba(37,99,235,0.15);
+  }
+
+  .cart-card {
+    margin-top:32px;
+    padding:0;
+    overflow:hidden;
+  }
+
+  .cart-header {
+    padding:24px;
+    border-bottom:1px solid var(--border-soft);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  .cart-stats {
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    color:var(--text-secondary);
+    font-size:13px;
+  }
+
+  .cart-body { padding:16px 24px 24px; display:flex; flex-direction:column; gap:18px; }
+
+  .cart-empty {
+    padding:40px 24px;
+    text-align:center;
+    color:var(--text-secondary);
+    border:1px dashed var(--border-soft);
+    border-radius:14px;
+    background:var(--bg-subtle);
+  }
+
+  .cart-item {
+    display:grid;
+    grid-template-columns:1fr auto auto;
+    gap:20px;
+    padding:18px 0;
+    border-bottom:1px solid var(--border-soft);
+  }
+
+  .cart-item:last-child { border-bottom:none; }
+
+  .cart-item h4 { font-size:16px; margin-bottom:4px; }
+  .cart-item p { color:var(--text-secondary); font-size:13px; }
+
+  .quantity-group {
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .quantity-btn {
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid var(--border-soft);
+    background:var(--bg-surface);
+    font-weight:600;
+  }
+
+  .quantity-btn:hover { border-color:var(--blue-500); color:var(--blue-600); }
+
+  .text-link {
+    border:none;
+    background:transparent;
+    color:#dc2626;
+    font-size:13px;
+    font-weight:600;
+    text-decoration:underline;
+  }
+
+  .cart-summary {
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:16px;
+    padding-top:8px;
+  }
+
+  .cart-summary h3 { font-size:20px; }
+  .cart-summary span { color:var(--text-secondary); font-size:13px; }
+
+  .checkout-btn {
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    font-weight:600;
+    font-size:15px;
+    background:var(--green-500);
+    color:#fff;
+    transition:background 0.2s ease;
+  }
+
+  .checkout-btn:hover { background:#15803d; }
+
+  .prof-card {
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    border:1px solid var(--border-soft);
+  }
+
+  .prof-head {
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
+
+  .prof-avatar {
+    width:70px;
+    height:70px;
+    border-radius:18px;
+    background:linear-gradient(135deg, var(--blue-600), #0ea5e9);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-weight:700;
+    font-size:22px;
+  }
+
+  .prof-meta { color:var(--text-secondary); font-size:13px; }
+
+  .prof-actions { display:flex; gap:12px; flex-wrap:wrap; }
+
+  .tag {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--bg-subtle);
+    border-radius:999px;
+    padding:6px 12px;
+    font-size:12px;
+    color:var(--text-secondary);
+  }
+
+  .calculator-output {
+    margin-top:14px;
+    background:rgba(37,99,235,0.08);
+    border-radius:12px;
+    padding:14px;
+    font-weight:600;
+    color:var(--blue-600);
+  }
+
+  .tool-grid {
+    display:grid;
+    gap:24px;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  }
+
+  footer {
+    background:#fff;
+    color:#0f172a;
+    text-align:center;
+    padding:28px 16px;
+    margin-top:auto;
+    border-top:1px solid #64748b;
+  }
+
+  footer p { font-size:14px; }
+
+  .cart-sidebar {
+    position:fixed;
+    top:0;
+    right:0;
+    width:350px;
+    height:100vh;
+    background:var(--bg-surface);
+    box-shadow:-4px 0 20px rgba(0,0,0,0.1);
+    transform:translateX(100%);
+    transition:transform 0.3s ease;
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .cart-sidebar.open { transform:translateX(0); }
+
+  .cart-sidebar-header {
+    padding:20px;
+    border-bottom:1px solid var(--border-soft);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .cart-sidebar-body {
+    flex:1;
+    padding:24px;
+    overflow-y:auto;
+  }
+
+  .container.sidebar-open { margin-right:350px; }
+
+  .header-inner.sidebar-open { margin-right:350px; }
+
+  #cartToggle:hover { color: #dc2626; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand"><span class="brand-pill">CC</span> CivilConnect</div>
+    <nav>
+      <button id="tabHome" class="active">Home</button>
+      <button id="tabMarketplace">Marketplace</button>
+      <button id="tabProfessionals">Professionals</button>
+      <button id="tabTools">Tools</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <section id="homeSection" class="content-section active">
+      <div class="card hero">
+        <div>
+          <h1>Build smarter with CivilConnect</h1>
+          <p>Discover vetted suppliers, collaborate with top professionals, and access the tools you need to deliver exceptional civil engineering projects on time.</p>
+          <div class="action-row">
+            <button class="btn-primary" onclick="switchTab('marketplace')">Explore Marketplace</button>
+            <button class="btn-secondary" onclick="switchTab('professionals')">Meet Experts</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlights">
+        <div class="highlight">
+          <span>Active Materials</span>
+          <strong>120+</strong>
+        </div>
+        <div class="highlight">
+          <span>Verified Partners</span>
+          <strong>85</strong>
+        </div>
+        <div class="highlight">
+          <span>Avg. Lead Time</span>
+          <strong>3.2 days</strong>
+        </div>
+        <div class="highlight">
+          <span>Projects Supported</span>
+          <strong>640</strong>
+        </div>
+      </div>
+    </section>
+
+    <section id="marketplaceSection" class="content-section">
+      <h2 class="section-title">Marketplace</h2>
+      <div class="card marketplace-toolbar">
+        <div class="field">
+          <span>Search materials</span>
+          <input type="search" id="searchInput" placeholder="Try &quot;cement&quot; or &quot;steel&quot;">
+        </div>
+        <div class="field">
+          <span>Category</span>
+          <select id="categoryFilter"></select>
+        </div>
+        <div class="field">
+          <span>Sort by</span>
+          <select id="sortFilter">
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="lead">Shortest Lead Time</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-3" id="materialsGrid"></div>
+    </section>
+
+    <section id="professionalsSection" class="content-section">
+      <h2 class="section-title">Professionals Nearby</h2>
+      <div class="grid grid-2" id="professionalsList"></div>
+    </section>
+
+    <section id="toolsSection" class="content-section">
+      <h2 class="section-title">Project Tools</h2>
+      <div class="tool-grid">
+        <div class="card">
+          <h3>Cost Estimator</h3>
+          <div class="field" style="margin-top:18px;">
+            <span>Built-up area (sq.ft)</span>
+            <input type="number" id="costArea" placeholder="Enter area">
+          </div>
+          <div class="field" style="margin-top:16px;">
+            <span>Rate per sq.ft (₹)</span>
+            <input type="number" id="costRate" value="1500">
+          </div>
+          <button class="btn-full" style="margin-top:16px;" onclick="calculateCost()">Calculate</button>
+          <div id="costResult" class="calculator-output"></div>
+        </div>
+
+        <div class="card">
+          <h3>Concrete Mix Designer</h3>
+          <div class="field" style="margin-top:18px;">
+            <span>Concrete grade</span>
+            <select id="mixGrade">
+              <option>M15</option>
+              <option>M20</option>
+              <option>M25</option>
+              <option>M30</option>
+              <option>M35</option>
+            </select>
+          </div>
+          <div class="field" style="margin-top:16px;">
+            <span>Volume (m³)</span>
+            <input type="number" id="mixVolume" placeholder="Enter required volume">
+          </div>
+          <button class="btn-full" style="margin-top:16px;" onclick="calculateMix()">Material Breakdown</button>
+          <div id="mixResult" class="calculator-output"></div>
+        </div>
+
+        <div class="card">
+          <h3>Construction Activity Tracker (CAT)</h3>
+          <p style="color:var(--text-secondary); margin-top:10px;">Log daily site updates and share progress snapshots across your project stakeholders.</p>
+          <div class="field" style="margin-top:18px;">
+            <span>Today&apos;s focus</span>
+            <input type="text" id="catFocus" placeholder="e.g., Slab reinforcement">
+          </div>
+          <div class="field" style="margin-top:16px;">
+            <span>Key blockers</span>
+            <input type="text" id="catBlockers" placeholder="List dependencies or issues">
+          </div>
+          <div class="field" style="margin-top:16px;">
+            <span>Next action</span>
+            <input type="text" id="catNext" placeholder="Assign owner & deadline">
+          </div>
+          <button class="btn-full" style="margin-top:16px;" onclick="logCatUpdate()">Save update</button>
+          <div id="catResult" class="calculator-output" style="display:none;"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="cartSidebar" class="cart-sidebar">
+  <div class="cart-sidebar-header">
+    <button id="cartToggle" style="background:none;border:none;font-size:20px;color:var(--text-secondary);cursor:pointer;">×</button>
+    <div style="flex:1;text-align:center;">
+      <h3>Smart Cart</h3>
+      <small class="cart-stats">Items: <strong id="cartCount">0</strong></small>
+    </div>
+  </div>
+  <div class="cart-sidebar-body">
+    <div id="cartItems" class="cart-list"></div>
+    <div id="cartEmptyState" class="cart-empty">Your cart is empty. Add materials to build a procurement list.</div>
+    <div class="cart-summary">
+      <div>
+        <h3>Total</h3>
+        <span id="cartLeadTime">Lead time updates as you add materials.</span>
+      </div>
+      <div>
+        <strong id="cartTotal">₹0</strong>
+      </div>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+  </div>
+</div>
+
+<footer>
+  <p>CivilConnect © 2025 · Transforming Civil Engineering by connecting professionals, suppliers, and innovation.</p>
+</footer>
+
+<script>
+  const tabIds = ['home','marketplace','professionals','tools'];
+  function switchTab(tab){
+    tabIds.forEach(t=>{
+      const section = document.getElementById(t+'Section');
+      const button = document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1));
+      section.classList.remove('active');
+      button.classList.remove('active');
+    });
+    document.getElementById(tab+'Section').classList.add('active');
+    document.getElementById('tab'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.add('active');
+    if(tab === 'marketplace'){
+      state.search = '';
+      state.category = 'all';
+      state.sort = 'featured';
+      searchInput.value = '';
+      categoryFilter.value = 'all';
+      sortFilter.value = 'featured';
+      renderMaterials();
+    }
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  document.getElementById('tabHome').onclick = ()=>switchTab('home');
+  document.getElementById('tabMarketplace').onclick = ()=>switchTab('marketplace');
+  document.getElementById('tabProfessionals').onclick = ()=>switchTab('professionals');
+  document.getElementById('tabTools').onclick = ()=>switchTab('tools');
+
+  const materials = [
+    {id:1,name:'Portland Cement (50kg)',price:450,supplier:'BuildMart Supplies',emoji:'🏗️',category:'Concrete',leadTime:2,unit:'bag',stock:'In stock'},
+    {id:2,name:'Steel Rebar 12mm',price:850,supplier:'MetalWorks Ltd',emoji:'⚙️',category:'Steel',leadTime:3,unit:'per bundle',stock:'Low stock'},
+    {id:3,name:'Ready Mix Concrete M25',price:5500,supplier:'ConcreteXpress',emoji:'🚚',category:'Concrete',leadTime:1,unit:'per load',stock:'Scheduled'},
+    {id:4,name:'Clay Bricks (1000 pcs)',price:6000,supplier:'BrickMasters',emoji:'🧱',category:'Masonry',leadTime:4,unit:'per pallet',stock:'In stock'},
+    {id:5,name:'River Sand (1 ton)',price:1200,supplier:'Aggregate Hub',emoji:'⛰️',category:'Aggregates',leadTime:2,unit:'per ton',stock:'In stock'},
+    {id:6,name:'Plywood 18mm',price:2200,supplier:'WoodCraft Pro',emoji:'🪵',category:'Formwork',leadTime:5,unit:'per sheet',stock:'Preorder'},
+    {id:7,name:'PVC Pipes (110mm)',price:950,supplier:'FlowTech Systems',emoji:'🛠️',category:'Plumbing',leadTime:3,unit:'per pack',stock:'In stock'},
+    {id:8,name:'Structural Steel Beam HEB 200',price:7800,supplier:'SteelCore Industries',emoji:'🏗️',category:'Steel',leadTime:6,unit:'per piece',stock:'Limited'},
+    {id:9,name:'Ready Mix Mortar',price:1450,supplier:'QuickSet Mixers',emoji:'🧪',category:'Concrete',leadTime:2,unit:'per bag',stock:'In stock'}
+  ];
+
+  const professionals = [
+    {name:'Dr. Rajesh Kumar',role:'Structural Engineer',experience:'15 years',rating:4.9,distance:'2.3 km',projects:127,availability:'Consult slots open'},
+    {name:'Priya Sharma',role:'Architect',experience:'10 years',rating:4.7,distance:'3.5 km',projects:89,availability:'Design sprint available'},
+    {name:'Mohammed Ali',role:'Contractor',experience:'20 years',rating:4.8,distance:'1.8 km',projects:203,availability:'Crew mobilizing in 1 week'},
+    {name:'Sarah Patel',role:'Quantity Surveyor',experience:'8 years',rating:4.6,distance:'4.2 km',projects:64,availability:'Cost review window open'},
+    {name:"John D'Souza",role:'Site Supervisor',experience:'12 years',rating:4.5,distance:'2.9 km',projects:156,availability:'Accepting new projects'}
+  ];
+
+  const materialsGrid = document.getElementById('materialsGrid');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const sortFilter = document.getElementById('sortFilter');
+  const searchInput = document.getElementById('searchInput');
+
+  const uniqueCategories = ['All categories', ...new Set(materials.map(item=>item.category))];
+  categoryFilter.innerHTML = uniqueCategories.map((cat,idx)=>`<option value="${idx===0?'all':cat}">${cat}</option>`).join('');
+
+  const state = {search:'', category:'all', sort:'featured'};
+
+  searchInput.addEventListener('input', e=>{
+    state.search = e.target.value.toLowerCase();
+    renderMaterials();
+  });
+
+  categoryFilter.addEventListener('change', e=>{
+    state.category = e.target.value;
+    renderMaterials();
+  });
+
+  sortFilter.addEventListener('change', e=>{
+    state.sort = e.target.value;
+    renderMaterials();
+  });
+
+  let cart = [];
+
+  function checkout(){
+    if(cart.length === 0){
+      alert('Your cart is empty.');
+      return;
+    }
+    alert('Products checked out successfully!');
+    cart = [];
+    renderCart();
+  }
+
+  function getFilteredMaterials(){
+    let filtered = materials.filter(item=>{
+      const matchesSearch = item.name.toLowerCase().includes(state.search) || item.supplier.toLowerCase().includes(state.search);
+      const matchesCategory = state.category === 'all' || item.category === state.category;
+      return matchesSearch && matchesCategory;
+    });
+
+    if(state.sort === 'price-asc'){
+      filtered = filtered.slice().sort((a,b)=>a.price-b.price);
+    } else if(state.sort === 'price-desc'){
+      filtered = filtered.slice().sort((a,b)=>b.price-a.price);
+    } else if(state.sort === 'lead'){
+      filtered = filtered.slice().sort((a,b)=>a.leadTime-b.leadTime);
+    }
+    return filtered;
+  }
+
+  function renderMaterials(){
+    materialsGrid.innerHTML = '';
+    const list = getFilteredMaterials();
+    if(list.length === 0){
+      const emptyCard = document.createElement('div');
+      emptyCard.className = 'card';
+      emptyCard.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">No materials match your filters right now.</p>';
+      materialsGrid.appendChild(emptyCard);
+      return;
+    }
+    list.forEach(item=>{
+      const card = document.createElement('div');
+      card.className = 'card material-card';
+      card.innerHTML = `
+        <div class="material-header">
+          <span class="material-emoji">${item.emoji}</span>
+          <span class="material-category">${item.category}</span>
+        </div>
+        <div>
+          <h3>${item.name}</h3>
+          <p style="color:var(--text-secondary); margin-top:6px;">${item.supplier}</p>
+        </div>
+        <div class="material-meta">
+          <span>₹${item.price.toLocaleString()}</span>
+          <span>${item.unit}</span>
+        </div>
+        <div class="material-foot">
+          <span>Lead time: ${item.leadTime} day${item.leadTime>1?'s':''}</span>
+          <span>${item.stock}</span>
+        </div>
+        <button class="btn-full" onclick="addToCart(${item.id})">Add to cart</button>
+      `;
+      materialsGrid.appendChild(card);
+    });
+  }
+
+  function addToCart(id){
+    const existing = cart.find(entry=>entry.id===id);
+    if(existing){
+      existing.quantity += 1;
+    } else {
+      const material = materials.find(item=>item.id===id);
+      cart.push({...material, quantity:1});
+    }
+    renderCart();
+  }
+
+  function changeQuantity(id, delta){
+    const item = cart.find(entry=>entry.id===id);
+    if(!item){return;}
+    item.quantity += delta;
+    if(item.quantity <= 0){
+      cart = cart.filter(entry=>entry.id!==id);
+    }
+    renderCart();
+  }
+
+  function removeFromCart(id){
+    cart = cart.filter(entry=>entry.id!==id);
+    renderCart();
+  }
+
+  function renderCart(){
+    const cartSidebar = document.getElementById('cartSidebar');
+    const container = document.querySelector('.container');
+    const headerInner = document.querySelector('.header-inner');
+    const cartItemsDiv = document.getElementById('cartItems');
+    const cartCount = document.getElementById('cartCount');
+    const cartTotal = document.getElementById('cartTotal');
+    const cartLeadTime = document.getElementById('cartLeadTime');
+    const cartEmptyState = document.getElementById('cartEmptyState');
+
+    cartItemsDiv.innerHTML = '';
+    if(cart.length === 0){
+      cartEmptyState.style.display = 'block';
+      cartTotal.textContent = '₹0';
+      cartLeadTime.textContent = 'Lead time updates as you add materials.';
+      cartSidebar.classList.remove('open');
+      container.classList.remove('sidebar-open');
+      headerInner.classList.remove('sidebar-open');
+      document.getElementById('cartCount').textContent = '0';
+      return;
+    }
+
+    cartEmptyState.style.display = 'none';
+    cartSidebar.classList.add('open');
+    container.classList.add('sidebar-open');
+    headerInner.classList.add('sidebar-open');
+
+    let totalCost = 0;
+    let totalItems = 0;
+    let longestLead = 0;
+
+    cart.forEach(item=>{
+      totalCost += item.price * item.quantity;
+      totalItems += item.quantity;
+      longestLead = Math.max(longestLead, item.leadTime);
+
+      const row = document.createElement('div');
+      row.className = 'cart-item';
+      row.innerHTML = `
+        <div>
+          <h4>${item.name}</h4>
+          <p>₹${item.price.toLocaleString()} · ${item.unit} · Lead ${item.leadTime}d</p>
+        </div>
+        <div class="quantity-group">
+          <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+          <strong>${item.quantity}</strong>
+          <button class="quantity-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+        </div>
+        <div style="text-align:right;">
+          <strong>₹${(item.price * item.quantity).toLocaleString()}</strong><br>
+          <button class="text-link" onclick="removeFromCart(${item.id})">Remove</button>
+        </div>
+      `;
+      cartItemsDiv.appendChild(row);
+    });
+
+    cartTotal.textContent = '₹' + totalCost.toLocaleString();
+    cartLeadTime.textContent = `Estimated combined lead time: ${longestLead} day${longestLead>1?'s':''}`;
+    document.getElementById('cartCount').textContent = totalItems.toString();
+  }
+
+  const profDiv = document.getElementById('professionalsList');
+  professionals.forEach(prof=>{
+    const card = document.createElement('div');
+    card.className = 'card prof-card';
+    const initials = prof.name.split(' ').map(part=>part[0]).join('').slice(0,2).toUpperCase();
+    card.innerHTML = `
+      <div class="prof-head">
+        <div class="prof-avatar">${initials}</div>
+        <div>
+          <h3>${prof.name}</h3>
+          <p class="prof-meta">${prof.role} · ${prof.experience}</p>
+          <div class="prof-actions">
+            <span class="tag">⭐ ${prof.rating}</span>
+            <span class="tag">📍 ${prof.distance}</span>
+          </div>
+        </div>
+      </div>
+      <div class="prof-meta">${prof.projects} completed projects · ${prof.availability}</div>
+      <div class="prof-actions">
+        <button class="btn-primary" style="min-width:140px;" onclick="requestCall('${prof.name}')">Request call</button>
+        <button class="btn-secondary" style="min-width:140px;" onclick="bookmarkExpert('${prof.name}')">Bookmark</button>
+      </div>
+    `;
+    profDiv.appendChild(card);
+  });
+
+  function requestCall(name){
+    alert(`${name} will contact you shortly.`);
+  }
+
+  function bookmarkExpert(name){
+    alert(`${name} has been bookmarked.`);
+  }
+
+  function calculateCost(){
+    const area = parseFloat(document.getElementById('costArea').value) || 0;
+    const rate = parseFloat(document.getElementById('costRate').value) || 0;
+    if(area <= 0 || rate <= 0){
+      document.getElementById('costResult').textContent = 'Enter valid values to calculate cost.';
+      return;
+    }
+    const total = area * rate;
+    document.getElementById('costResult').textContent = `Estimated Cost: ₹${total.toLocaleString()}`;
+  }
+
+  function calculateMix(){
+    const volume = parseFloat(document.getElementById('mixVolume').value) || 0;
+    const grade = document.getElementById('mixGrade').value;
+    if(volume <= 0){
+      document.getElementById('mixResult').textContent = 'Enter a valid volume to continue.';
+      return;
+    }
+    const cement = (volume * 7.5).toFixed(2);
+    const sand = (volume * 0.42).toFixed(2);
+    const aggregate = (volume * 0.84).toFixed(2);
+    const water = (volume * 180).toFixed(0);
+    document.getElementById('mixResult').innerHTML = `
+      <div>${grade} mix breakdown</div>
+      <div>Cement: ${cement} bags</div>
+      <div>Sand: ${sand} m³</div>
+      <div>Aggregate: ${aggregate} m³</div>
+      <div>Water: ${water} liters</div>
+    `;
+  }
+
+  function logCatUpdate(){
+    const focusField = document.getElementById('catFocus');
+    const blockersField = document.getElementById('catBlockers');
+    const nextField = document.getElementById('catNext');
+    const focus = focusField.value.trim();
+    const blockers = blockersField.value.trim();
+    const next = nextField.value.trim();
+    if(!focus && !blockers && !next){
+      alert('Add at least one update before saving.');
+      return;
+    }
+    const result = document.getElementById('catResult');
+    const today = new Date().toLocaleDateString();
+    result.style.display = 'block';
+    result.innerHTML = `
+      <div>CAT update saved for ${today}</div>
+      <div>Focus: ${focus || '—'}</div>
+      <div>Blockers: ${blockers || '—'}</div>
+      <div>Next action: ${next || '—'}</div>
+    `;
+    focusField.value = '';
+    blockersField.value = '';
+    nextField.value = '';
+  }
+
+  document.getElementById('cartToggle').addEventListener('click', ()=>{
+    const cartSidebar = document.getElementById('cartSidebar');
+    const container = document.querySelector('.container');
+    const headerInner = document.querySelector('.header-inner');
+    cartSidebar.classList.toggle('open');
+    if(cartSidebar.classList.contains('open')){
+      container.classList.add('sidebar-open');
+      headerInner.classList.add('sidebar-open');
+    } else {
+      container.classList.remove('sidebar-open');
+      headerInner.classList.remove('sidebar-open');
+    }
+  });
+</script>
+
+</body>
+</html>
