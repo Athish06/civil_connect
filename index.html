@@ -540,6 +540,355 @@
   }
 
   #cartToggle:hover { color: #dc2626; background: rgba(220,38,38,0.1); border-radius:4px; padding:4px 8px; }
+
+  /* Mobile Responsive Styles */
+  @media (max-width: 768px) {
+    .header-inner {
+      flex-direction: column;
+      padding: 16px;
+    }
+
+    nav {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    nav button {
+      flex: 1;
+      font-size: 12px;
+      padding: 8px 6px;
+    }
+
+    .brand {
+      font-size: 18px;
+    }
+
+    .hero h1 {
+      font-size: 26px;
+    }
+
+    .hero p {
+      font-size: 14px;
+    }
+
+    .action-row {
+      flex-direction: column;
+    }
+
+    .btn-primary, .btn-secondary {
+      width: 100%;
+      min-width: auto;
+    }
+
+    .highlights {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .marketplace-toolbar {
+      flex-direction: column;
+      padding: 16px;
+    }
+
+    .field {
+      width: 100%;
+      min-width: auto;
+    }
+
+    .cart-sidebar {
+      width: 100%;
+    }
+
+    .cart-item {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .quantity-group {
+      justify-content: flex-start;
+    }
+
+    .container.sidebar-open {
+      margin-right: 0;
+    }
+
+    .header-inner.sidebar-open {
+      margin-right: 0;
+    }
+
+    .tool-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .prof-head {
+      flex-direction: row;
+      align-items: flex-start;
+      position: relative;
+      padding-right: 64px;
+    }
+
+    .btn-call {
+      position: absolute;
+      top: 8px;
+      right: 0;
+    }
+
+    .prof-actions {
+      width: 100%;
+    }
+
+    .prof-actions button {
+      flex: 1;
+    }
+
+    .login-card {
+      padding: 24px;
+    }
+
+    .container {
+      padding: 24px 16px;
+    }
+
+    .cart-summary {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .modal-content {
+      margin: 0 16px;
+    }
+
+    footer {
+      padding: 16px 12px;
+    }
+
+    footer p {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 {
+      font-size: 22px;
+    }
+
+    .highlights {
+      grid-template-columns: 1fr;
+    }
+
+    nav button {
+      font-size: 11px;
+      padding: 6px 4px;
+    }
+
+    .brand {
+      font-size: 16px;
+    }
+
+    .brand-pill {
+      width: 32px;
+      height: 32px;
+      font-size: 14px;
+    }
+
+    footer {
+      padding: 12px 8px;
+    }
+
+    footer p {
+      font-size: 11px;
+    }
+  }
+
+  .phone-link {
+    color: var(--blue-600);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .phone-link:hover {
+    color: var(--blue-500);
+    text-decoration: underline;
+  }
+
+  .btn-call {
+    display: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #4A90E2, #2D7DD2);
+    color: #fff;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .btn-call:hover {
+    background: linear-gradient(135deg, #357ABD, #1E5FA8);
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    .btn-call {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  /* Modal Styles */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.active {
+    display: flex;
+  }
+
+  .modal-content {
+    background: var(--bg-surface);
+    border-radius: 18px;
+    padding: 28px;
+    max-width: 450px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .modal-header h3 {
+    font-size: 20px;
+    margin: 0;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-close:hover {
+    color: var(--text-primary);
+  }
+
+  .modal-body {
+    margin-bottom: 20px;
+  }
+
+  .modal-body textarea {
+    width: 100%;
+    min-height: 220px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(148,163,184,0.4);
+    background: #fff;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    resize: vertical;
+  }
+
+  .modal-body textarea:focus {
+    outline: none;
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  .modal-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-modal-primary {
+    background: var(--green-500);
+    color: #fff;
+  }
+
+  .btn-modal-primary:hover {
+    background: #15803d;
+  }
+
+  .btn-modal-secondary {
+    background: var(--bg-subtle);
+    color: var(--text-primary);
+  }
+
+  .btn-modal-secondary:hover {
+    background: var(--border-soft);
+  }
+
+  .choice-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .choice-btn {
+    padding: 14px;
+    border-radius: 12px;
+    border: 2px solid var(--border-soft);
+    background: var(--bg-surface);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .choice-btn:hover {
+    border-color: var(--blue-500);
+    background: rgba(37,99,235,0.05);
+  }
 </style>
 </head>
 <body>
@@ -730,6 +1079,45 @@
 
 </div>
 
+<!-- Choice Modal (Mobile only) -->
+<div id="choiceModal" class="modal-overlay" onclick="if(event.target === this) closeChoiceModal()">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Contact <span id="choiceProfName"></span></h3>
+      <button class="modal-close" onclick="closeChoiceModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="color: var(--text-secondary); margin-bottom: 16px;">Choose how you'd like to send your request:</p>
+      <div class="choice-buttons">
+        <button class="choice-btn" onclick="chooseMessaging('whatsapp')">
+          <span style="font-size: 20px;">💬</span> WhatsApp
+        </button>
+        <button class="choice-btn" onclick="chooseMessaging('sms')">
+          <span style="font-size: 20px;">📱</span> SMS / Messages
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Message Template Modal -->
+<div id="messageModal" class="modal-overlay" onclick="if(event.target === this) closeMessageModal()">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Request to <span id="modalProfName"></span></h3>
+      <button class="modal-close" onclick="closeMessageModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="color: var(--text-secondary); margin-bottom: 12px; font-size: 14px;">Edit the message below and add your details:</p>
+      <textarea id="messageText" placeholder="Enter your message..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-secondary" onclick="closeMessageModal()">Cancel</button>
+      <button class="btn-modal-primary" onclick="sendMessage()">Send Message</button>
+    </div>
+  </div>
+</div>
+
 <script>
   const tabIds = ['home','marketplace','professionals','tools'];
   const AUTH_EMAIL = 'test@gmail.com';
@@ -817,17 +1205,18 @@
   ];
 
   const professionals = [
-    {name:'L. Yuvaraj',role:'Civil Contractor',experience:'35 years',rating:4.8,distance:'Nearby',projects:150,availability:'Available for large projects'},
-    {name:'R. Karthikeyan',role:'Civil Contractor',experience:'35 years',rating:4.7,distance:'Nearby',projects:140,availability:'Experienced contractor'},
-    {name:'A. Akilan',role:'Supervisor',experience:'25 years',rating:4.6,distance:'Nearby',projects:80,availability:'Site supervision available'},
-    {name:'Kumar',role:'Mason',experience:'20 years',rating:4.5,distance:'Nearby',projects:60,availability:'Brickwork specialist'},
-    {name:'Perumal',role:'Plumber',experience:'15 years',rating:4.4,distance:'Nearby',projects:45,availability:'Plumbing services'},
-    {name:'Namashivayam',role:'Electrician',experience:'15 years',rating:4.3,distance:'Nearby',projects:40,availability:'Electrical work'},
-    {name:'Manohar',role:'Carpenter',experience:'15 years',rating:4.4,distance:'Nearby',projects:50,availability:'Woodwork expert'},
-    {name:'Kasinathan',role:'Shuttering and Bar Bending Work',experience:'15 years',rating:4.5,distance:'Nearby',projects:55,availability:'Reinforcement specialist'},
-    {name:'Shenavas',role:'Architect',experience:'30 years',rating:4.9,distance:'Nearby',projects:120,availability:'Design consultations'},
-    {name:'Ponnusamy',role:'Structural Engineer',experience:'15 years',rating:4.6,distance:'Nearby',projects:70,availability:'Structural analysis'},
-    {name:'Prakash',role:'Painter',experience:'15 years',rating:4.2,distance:'Nearby',projects:35,availability:'Painting services'}
+    {name:'Naveen',role:'Civil Contractor',experience:'100 years',rating:5.0,distance:'Nearby',projects:1500,availability:'Available for large projects',phone:'8110056833'},
+    {name:'L. Yuvaraj',role:'Civil Contractor',experience:'35 years',rating:4.8,distance:'Nearby',projects:150,availability:'Available for large projects',phone:'9943967334'},
+    {name:'R. Karthikeyan',role:'Civil Contractor',experience:'35 years',rating:4.7,distance:'Nearby',projects:140,availability:'Experienced contractor',phone:'9443238254'},
+    {name:'A. Akilan',role:'Supervisor',experience:'25 years',rating:4.6,distance:'Nearby',projects:80,availability:'Site supervision available',phone:'9443091304'},
+    {name:'Kumar',role:'Mason',experience:'20 years',rating:4.5,distance:'Nearby',projects:60,availability:'Brickwork specialist',phone:'9442001297'},
+    {name:'Perumal',role:'Plumber',experience:'15 years',rating:4.4,distance:'Nearby',projects:45,availability:'Plumbing services',phone:'9842074892'},
+    {name:'Namashivayam',role:'Electrician',experience:'15 years',rating:4.3,distance:'Nearby',projects:40,availability:'Electrical work',phone:'9789378287'},
+    {name:'Manohar',role:'Carpenter',experience:'15 years',rating:4.4,distance:'Nearby',projects:50,availability:'Woodwork expert',phone:'9443201202'},
+    {name:'Kasinathan',role:'Shuttering and Bar Bending Work',experience:'15 years',rating:4.5,distance:'Nearby',projects:55,availability:'Reinforcement specialist',phone:'9443285681'},
+    {name:'Shenavas',role:'Architect',experience:'30 years',rating:4.9,distance:'Nearby',projects:120,availability:'Design consultations',phone:'9443718476'},
+    {name:'Ponnusamy',role:'Structural Engineer',experience:'15 years',rating:4.6,distance:'Nearby',projects:70,availability:'Structural analysis',phone:'9444010908'},
+    {name:'Prakash',role:'Painter',experience:'15 years',rating:4.2,distance:'Nearby',projects:35,availability:'Painting services',phone:'8610494790'}
   ];
 
   const materialsGrid = document.getElementById('materialsGrid');
@@ -1017,26 +1406,135 @@
     card.innerHTML = `
       <div class="prof-head">
         <div class="prof-avatar">${initials}</div>
-        <div>
+        <div style="flex: 1;">
           <h3>${prof.name}</h3>
           <p class="prof-meta">${prof.role} · ${prof.experience}</p>
+          <p class="prof-meta">📞 ${prof.phone}</p>
           <div class="prof-actions">
             <span class="tag">⭐ ${prof.rating}</span>
             <span class="tag">📍 ${prof.distance}</span>
           </div>
         </div>
+        <button class="btn-call" onclick="directCall('${prof.phone}')" title="Call ${prof.name}">📞</button>
       </div>
       <div class="prof-meta">${prof.projects} completed projects · ${prof.availability}</div>
       <div class="prof-actions">
-        <button class="btn-primary" style="min-width:140px;" onclick="requestCall('${prof.name}')">Request call</button>
+        <button class="btn-primary" style="min-width:140px;" onclick="requestCall('${prof.name}', '${prof.phone}', '${prof.role}')">Request call</button>
         <button class="btn-secondary" style="min-width:140px;" onclick="bookmarkExpert('${prof.name}')">Bookmark</button>
       </div>
     `;
     profDiv.appendChild(card);
   });
 
-  function requestCall(name){
-    alert(`${name} will contact you shortly.`);
+  function directCall(phone) {
+    // This button only shows on mobile, so directly open dialer
+    // Remove any spaces from phone number
+    phone = phone.replace(/\s+/g, '');
+    window.location.href = `tel:${phone}`;
+  }
+
+  function requestCall(name, phone, role) {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
+    if (isMobile) {
+      // Show choice modal on mobile
+      showChoiceModal(name, phone, role);
+    } else {
+      // Desktop - directly open WhatsApp with template
+      showMessageModal(name, phone, role, 'whatsapp');
+    }
+  }
+
+  function showChoiceModal(name, phone, role) {
+    const modal = document.getElementById('choiceModal');
+    document.getElementById('choiceProfName').textContent = name;
+    
+    // Store data for later use
+    modal.dataset.name = name;
+    modal.dataset.phone = phone;
+    modal.dataset.role = role;
+    
+    modal.classList.add('active');
+  }
+
+  function closeChoiceModal() {
+    document.getElementById('choiceModal').classList.remove('active');
+  }
+
+  function chooseMessaging(type) {
+    const modal = document.getElementById('choiceModal');
+    const name = modal.dataset.name;
+    const phone = modal.dataset.phone;
+    const role = modal.dataset.role;
+    
+    closeChoiceModal();
+    showMessageModal(name, phone, role, type);
+  }
+
+  function showMessageModal(name, phone, role, type) {
+    const modal = document.getElementById('messageModal');
+    const messageText = document.getElementById('messageText');
+    
+    // Default template message
+    const template = `Hello ${name},\n\nI would like to request your services for my construction project.\n\nRole: ${role}\n\nPlease provide the following details:\n- Your Name:\n- Project Location:\n- Project Type:\n- Expected Start Date:\n- Additional Requirements:\n\nLooking forward to your response.\n\nThank you!`;
+    
+    messageText.value = template;
+    
+    // Store data for sending
+    modal.dataset.phone = phone;
+    modal.dataset.name = name;
+    modal.dataset.type = type;
+    
+    document.getElementById('modalProfName').textContent = name;
+    modal.classList.add('active');
+  }
+
+  function closeMessageModal() {
+    document.getElementById('messageModal').classList.remove('active');
+  }
+
+  function sendMessage() {
+    const modal = document.getElementById('messageModal');
+    const message = document.getElementById('messageText').value.trim();
+    let phone = modal.dataset.phone;
+    const type = modal.dataset.type;
+    const name = modal.dataset.name;
+    
+    if (!message) {
+      alert('Please enter a message');
+      return;
+    }
+    
+    closeMessageModal();
+    
+    // Remove any spaces from phone number
+    phone = phone.replace(/\s+/g, '');
+    
+    // Encode message for URL
+    const encodedMessage = encodeURIComponent(message);
+    
+    if (type === 'whatsapp') {
+      // Open WhatsApp
+      window.open(`https://wa.me/91${phone}?text=${encodedMessage}`, '_blank');
+    } else if (type === 'sms') {
+      // Open SMS
+      window.location.href = `sms:${phone}?body=${encodedMessage}`;
+    }
+  }
+
+  function handlePhoneClick(phone, event) {
+    event.preventDefault();
+    
+    // Check if device is mobile
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
+    if (isMobile) {
+      // On mobile, open phone dialer
+      window.location.href = `tel:${phone}`;
+    } else {
+      // On desktop, open WhatsApp
+      window.open(`https://wa.me/91${phone}`, '_blank');
+    }
   }
 
   function bookmarkExpert(name){
